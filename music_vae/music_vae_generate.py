@@ -35,41 +35,42 @@ flags = tf.app.flags
 logging = tf.logging
 FLAGS = flags.FLAGS
 
-flags.DEFINE_string(
-    'run_dir', None,
-    'Path to the directory where the latest checkpoint will be loaded from.')
-flags.DEFINE_string(
-    'checkpoint_file', None,
-    'Path to the checkpoint file. run_dir will take priority over this flag.')
-flags.DEFINE_string(
-    'output_dir', '/tmp/music_vae/generated',
-    'The directory where MIDI files will be saved to.')
-flags.DEFINE_string(
-    'config', None,
-    'The name of the config to use.')
-flags.DEFINE_string(
-    'mode', 'sample',
-    'Generate mode (either `sample` or `interpolate`).')
-flags.DEFINE_string(
-    'input_midi_1', None,
-    'Path of start MIDI file for interpolation.')
-flags.DEFINE_string(
-    'input_midi_2', None,
-    'Path of end MIDI file for interpolation.')
-flags.DEFINE_integer(
-    'num_outputs', 5,
-    'In `sample` mode, the number of samples to produce. In `interpolate` '
-    'mode, the number of steps (including the endpoints).')
-flags.DEFINE_integer(
-    'max_batch_size', 8,
-    'The maximum batch size to use. Decrease if you are seeing an OOM.')
-flags.DEFINE_float(
-    'temperature', 0.5,
-    'The randomness of the decoding process.')
-flags.DEFINE_string(
-    'log', 'INFO',
-    'The threshold for what messages will be logged: '
-    'DEBUG, INFO, WARN, ERROR, or FATAL.')
+def set_flags():
+    flags.DEFINE_string(
+        'run_dir', None,
+        'Path to the directory where the latest checkpoint will be loaded from.')
+    flags.DEFINE_string(
+        'checkpoint_file', None,
+        'Path to the checkpoint file. run_dir will take priority over this flag.')
+    flags.DEFINE_string(
+        'output_dir', '/tmp/music_vae/generated',
+        'The directory where MIDI files will be saved to.')
+    flags.DEFINE_string(
+        'config', None,
+        'The name of the config to use.')
+    flags.DEFINE_string(
+        'mode', 'sample',
+        'Generate mode (either `sample` or `interpolate`).')
+    flags.DEFINE_string(
+        'input_midi_1', None,
+        'Path of start MIDI file for interpolation.')
+    flags.DEFINE_string(
+        'input_midi_2', None,
+        'Path of end MIDI file for interpolation.')
+    flags.DEFINE_integer(
+        'num_outputs', 5,
+        'In `sample` mode, the number of samples to produce. In `interpolate` '
+        'mode, the number of steps (including the endpoints).')
+    flags.DEFINE_integer(
+        'max_batch_size', 8,
+        'The maximum batch size to use. Decrease if you are seeing an OOM.')
+    flags.DEFINE_float(
+        'temperature', 0.5,
+        'The randomness of the decoding process.')
+    flags.DEFINE_string(
+        'log', 'INFO',
+        'The threshold for what messages will be logged: '
+        'DEBUG, INFO, WARN, ERROR, or FATAL.')
 
 
 def _slerp(p0, p1, t):
@@ -187,7 +188,7 @@ def main(unused_argv):
     run(configs.CONFIG_MAP)
 
 
-def console_entry_point():
+def music_vae_generate():
     FLAGS.config = 'hierdec-mel_16bar'
     FLAGS.checkpoint_file = '../ckpt/mel_16bar_hierdec.ckpt/mel_16bar_hierdec.ckpt'
     FLAGS.mode = 'interpolate'
@@ -199,4 +200,4 @@ def console_entry_point():
 
 
 if __name__ == '__main__':
-    console_entry_point()
+    music_vae_generate()
