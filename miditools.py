@@ -7,6 +7,10 @@ def convert_mp3_to_midi(audio_name, bpm=60, smooth=0.15, minduration=0.15):
     cmd += str(bpm) + " --smooth " + str(smooth) + " --minduration " + str(0.15)
     os.system(cmd)
 
+def convert_midi_to_mp3(audio_name):
+    cmd = "timidity " + audio_name + ".mid -Ow -o " + audio_name + ".mp3"
+    os.system(cmd)
+
 
 def get_midi_info(audio_name):
     mid = MidiFile('./Audio/'+ audio_name + ".mid")
@@ -26,5 +30,5 @@ def get_midi_info(audio_name):
 
         i += 1
         msg = mid.tracks[1][i]
-
+    
     return {"on_off": on_off, "note": note, "velocity": velocity, "time": time}
