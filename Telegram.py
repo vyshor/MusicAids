@@ -5,6 +5,7 @@ from pydub import AudioSegment
 import miditools
 import MIDI_to_generate
 from os import listdir
+import os
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 
@@ -73,12 +74,17 @@ def process_audio(msg, content_type):
 
     # Getting midi_file in dictionary form
     midi_dict, midi_path = to_MIDI(audio_id)
+    os.remove(f'./Audio/{audio_id}.wav')
+    if f'{audio_id}.{audio_type}' in listdir('./Audio'):
+        os.remove(f'./Audio/{audio_id}.{audio_type}')
     print(midi_dict)
 
     # midi_file is dictionary format
     full_path, file_name = MIDI_to_generate.generate_audio(midi_dict, midi_path)
+    os.remove(midi_path)
 
     miditools.convert_midi_to_mp3(full_path, file_name)
+    os.remove(full_path)
 
     return './telegram_generated/' + file_name + '.mp3'
 
@@ -94,6 +100,7 @@ def on_chat_message(msg):
         mp3_full_path = process_audio(msg, content_type)
 
         bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=query_data)
+        os.remove(mp3_full_path)
 
     else:
         keyboard = InlineKeyboardMarkup(inline_keyboard=[

@@ -30,7 +30,7 @@ reset_flags()
 # reset_flags()
 
 
-def generate_audio(chord_dict, midi_path, instrument='simple_melody'):
+def generate_audio(chord_dict, midi_path, instrument='simple_piano'):
     path = './telegram_generated'
     note_type = chord_dict['on_off']
     note = chord_dict['note']

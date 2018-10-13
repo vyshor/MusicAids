@@ -278,13 +278,12 @@ def polyphony_rnn_generate(model_name='polyphony_rnn', steps=256, primer=[]):
     # Default steps = 256, equals to 16 bar
     # 1 bar = 16 steps
 
-    set_flags()
     FLAGS.config = model_name
     FLAGS.num_steps = steps
     if primer:
-        FLAGS.primer_pitches = primer
+        FLAGS.primer_melody = primer
     else:
-        FLAGS.primer_pitches = '[67,64,60]'
+        FLAGS.primer_pitches = "[60, -2, 60, -2, 67, -2, 67, -2]"
     FLAGS.condition_on_primer = True
     FLAGS.inject_primer_during_generation = False
     FLAGS.bundle_file = f'./prebuilt_models/{model_name}.mag'
