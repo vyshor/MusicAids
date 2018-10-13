@@ -5,6 +5,8 @@ from pydub import AudioSegment
 import miditools
 import MIDI_to_generate
 from os import listdir
+from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
+
 
 # need to set the variables for ffmpeg to work
 
@@ -53,23 +55,21 @@ def download_audio(msg, content_type):
     return audio_id, audio_type
 
 
-# Telegram Bot Handle
-def handle(msg):
-    content_type, chat_type, chat_id = telepot.glance(msg)
-
-    # Will need to find a way to stream line this part
-    if content_type != 'audio' and content_type != 'voice':
-        bot.sendMessage(chat_id, 'Please Send An Audio File')
-        return
-
-    # Handle audio/voice file
+# Process Audio
+# Input: msg (Dictionary Object)
+def process_audio(msg, content_type):
     audio_id, audio_type = download_audio(msg, content_type)
+
     while audio_id + '.' + audio_type not in listdir('./Audio'):
         time.sleep(1)
+
     print(listdir('./Audio'))
+
     to_WAV(audio_id, audio_type)
+
     while audio_id + '.wav' not in listdir('./Audio'):
         time.sleep(1)
+
     # Getting midi_file in dictionary form
     midi_file = to_MIDI(audio_id)
     print(midi_file)
@@ -79,16 +79,46 @@ def handle(msg):
 
     miditools.convert_midi_to_mp3(full_path, file_name)
 
-    mp3_full_path = './telegram_generated/' + file_name
+    return './telegram_generated/' + file_name + '.mp3'
 
 
+# Telegram Bot Handle
+def on_chat_message(msg):
+    content_type, chat_type, chat_id = telepot.glance(msg)
+
+    if content_type == 'audio' or content_type == 'voice':
+        bot.sendMessage(chat_id, 'Step 3: Bot Composing Overtime without Pay :D')
+
+        mp3_full_path = process_audio(msg, content_type)
+
+        bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=query_data)
+
+    else:
+        keyboard = InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text='Piano', callback_data='Piano')],
+            [InlineKeyboardButton(text='Combine Piano', callback_data='Combine Piano')],
+            [InlineKeyboardButton(text='Simple Drum', callback_data='Drum')],
+            [InlineKeyboardButton(text='Combine Drum', callback_data='Combine Drum')],
+            [InlineKeyboardButton(text='Melody', callback_data='Melody')],
+            [InlineKeyboardButton(text='Trio', callback_data='Trio')],
+        ])
+
+        bot.sendMessage(chat_id, 'Step 1: Choose Your Style', reply_markup=keyboard)
+
+
+def on_callback_query(msg):
+    global query_data
+    query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
+
+    bot.sendMessage(from_id, 'Step 2: Send an Audio or Recording')
 
 
 bot = telepot.Bot("650714662:AAErwYcsJYNPnAw8Vpa9rEw9Q1w6D1vGV3c")
 
-MessageLoop(bot, handle).run_as_thread()
+MessageLoop(bot, {'chat': on_chat_message,
+                  'callback_query': on_callback_query}).run_as_thread()
+
 print('Listening ...')
 
-# Keep the program running.
 while 1:
     time.sleep(10)
