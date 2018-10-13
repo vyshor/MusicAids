@@ -27,4 +27,3 @@ def get_midi_info(audio_name):
         msg = mid.tracks[1][i]
     
     return {"on_off": on_off, "note": note, "velocity": velocity, "time": time}
-
