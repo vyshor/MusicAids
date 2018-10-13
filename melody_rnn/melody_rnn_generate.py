@@ -248,20 +248,22 @@ def main(unused_argv):
         run_with_flags(generator)
 
 
-def melody_rnn_generate(model_name='lookback_rnn', steps=256, primer=[]):
+def melody_rnn_generate(model_name='lookback_rnn', steps=256, primer=None):
     # Default model = 'lookback_rnn"
     # Possible models for melody rnn = basic_rnn, attention_rnn, lookback_rnn
     # Default steps = 256, equals to 16 bar
     # 1 bar = 16 steps
 
-    set_flags()
     FLAGS.config = model_name
     FLAGS.num_steps = steps
+    FLAGS.num_outputs = 1
     FLAGS.bundle_file = f'./prebuilt_models/{model_name}.mag'
     FLAGS.output_dir = f'./telegram_generated'
     if primer:
         FLAGS.primer_melody = primer
     tf.app.run(main)
+    print("Finished")
+    return
 
     # name = 'lookback_rnn'
     # FLAGS.config = name

@@ -16,7 +16,7 @@ from os import listdir
 # pip install midiutil
 # pip install jams
 
-# For python2
+# For python2 (32 bit) (must be 32 bit)
 # pip install librosa
 # pip install vamp
 # pip install midiutil
@@ -75,7 +75,13 @@ def handle(msg):
     print(midi_file)
 
     # midi_file is dictionary format
-    MIDI_to_generate.generate_audio(midi_file)
+    full_path, file_name = MIDI_to_generate.generate_audio(midi_file)
+
+    miditools.convert_midi_to_mp3(full_path, file_name)
+
+    mp3_full_path = './telegram_generated/' + file_name
+
+
 
 
 bot = telepot.Bot("565545160:AAFfC3niohinhOTnBqJY11Jsu6J1_c6xmsI")
