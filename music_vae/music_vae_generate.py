@@ -32,8 +32,12 @@ from magenta.models.music_vae import configs
 from magenta.models.music_vae import TrainedModel
 
 flags = tf.app.flags
+ckpt_dict = {'hierdec-mel_16bar': 'mel_16bar_hierdec.ckpt', 'hierdec-trio_16bar': 'trio_16bar_hierdec.ckpt',
+             'cat-drums_2bar_small': 'drums_2bar_small.hikl.ckpt',
+             'nade-drums_2bar_full': 'drums_2bar_nade.full.ckpt'}
 logging = tf.logging
 FLAGS = flags.FLAGS
+
 
 def set_flags():
     flags.DEFINE_string(
@@ -188,16 +192,39 @@ def main(unused_argv):
     run(configs.CONFIG_MAP)
 
 
-def music_vae_generate():
-    FLAGS.config = 'hierdec-mel_16bar'
-    FLAGS.checkpoint_file = '../ckpt/mel_16bar_hierdec.ckpt/mel_16bar_hierdec.ckpt'
+def music_vae_generate(model_name, midi1, midi2):
+    # Possible configs for drum combinations = cat-drums_2bar_small, cat-drums_2bar_small, nade-drums_2bar_full
+    # Corresponding ckpt files = drums_2bar_small.lokl.ckpt, drums_2bar_small.hikl.ckpt, drums_2bar_nade.full.ckpt
+    # Default steps = 256, equals to 16 bar
+    # 1 bar = 16 steps
+
+    # Possible configs for melodies combinations = hierdec-mel_16bar
+    # Corresponding ckpt = mel_16bar_hierdec.ckpt
+
+    # Possible configs for trio combinations = hierdec-trio_16bar
+    # Corresponding ckpt = trio_16bar_hierdec.ckpt
+
+    ckpt = ckpt_dict[model_name]
+    FLAGS.config = model_name
+    FLAGS.checkpoint_file = f'../ckpt/{ckpt}/{ckpt}'
     FLAGS.mode = 'interpolate'
-    FLAGS.num_outputs = 10
-    FLAGS.input_midi_1 = '../generated/polyphony_rnn/cbad.mid'
-    FLAGS.input_midi_2 = '../generated/polyphony_rnn/abcd.mid'
-    FLAGS.output_dir = f'../generated/{FLAGS.config}'
+    FLAGS.num_outputs = 1
+    FLAGS.input_midi_1 = midi1
+    FLAGS.input_midi_2 = midi2
+    FLAGS.output_dir = f'./telegram_generated'
     tf.app.run(main)
+
+    # ckpt = ckpt_dict[model_name]
+    # FLAGS.config = model_name
+    # FLAGS.checkpoint_file = f'../ckpt/{ckpt}/{ckpt}'
+    # FLAGS.mode = 'interpolate'
+    # FLAGS.num_outputs = 10
+    # FLAGS.input_midi_1 = '../generated/polyphony_rnn/cbad.mid'
+    # FLAGS.input_midi_2 = '../generated/polyphony_rnn/abcd.mid'
+    # FLAGS.output_dir = f'../generated/{FLAGS.config}'
+    # tf.app.run(main)
 
 
 if __name__ == '__main__':
+    set_flags()
     music_vae_generate()

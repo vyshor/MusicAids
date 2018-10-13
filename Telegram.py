@@ -27,8 +27,9 @@ from os import listdir
 # Output: MIDI (Dictionary)
 def to_MIDI(audio_id):
     miditools.convert_mp3_to_midi(audio_id)
+    midi_path = f'./Audio/{audio_id}.mid'
     # do what is needed
-    return miditools.get_midi_info(audio_id)
+    return miditools.get_midi_info(audio_id), midi_path
 
 
 # Convert All Audio to WAV
@@ -71,11 +72,11 @@ def handle(msg):
     while audio_id + '.wav' not in listdir('./Audio'):
         time.sleep(1)
     # Getting midi_file in dictionary form
-    midi_file = to_MIDI(audio_id)
-    print(midi_file)
+    midi_dict, midi_path = to_MIDI(audio_id)
+    print(midi_dict)
 
     # midi_file is dictionary format
-    full_path, file_name = MIDI_to_generate.generate_audio(midi_file)
+    full_path, file_name = MIDI_to_generate.generate_audio(midi_dict, midi_path)
 
     miditools.convert_midi_to_mp3(full_path, file_name)
 

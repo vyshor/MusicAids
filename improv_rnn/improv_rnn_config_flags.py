@@ -19,47 +19,50 @@ import tensorflow as tf
 from magenta.models.improv_rnn import improv_rnn_model
 
 FLAGS = tf.app.flags.FLAGS
-# tf.app.flags.DEFINE_string(
-#     'config',
-#     None,
-#     "Which config to use. Must be one of 'basic_improv', 'attention_improv', "
-#     "or 'chord_pitches_improv'.")
-# tf.app.flags.DEFINE_string(
-#     'generator_id',
-#     None,
-#     'A unique ID for the generator, overriding the default.')
-# tf.app.flags.DEFINE_string(
-#     'generator_description',
-#     None,
-#     'A description of the generator, overriding the default.')
-# tf.app.flags.DEFINE_string(
-#     'hparams', '',
-#     'Comma-separated list of `name=value` pairs. For each pair, the value of '
-#     'the hyperparameter named `name` is set to `value`. This mapping is merged '
-#     'with the default hyperparameters.')
+
+
+def set_flags():
+    tf.app.flags.DEFINE_string(
+        'config',
+        None,
+        "Which config to use. Must be one of 'basic_improv', 'attention_improv', "
+        "or 'chord_pitches_improv'.")
+    tf.app.flags.DEFINE_string(
+        'generator_id',
+        None,
+        'A unique ID for the generator, overriding the default.')
+    tf.app.flags.DEFINE_string(
+        'generator_description',
+        None,
+        'A description of the generator, overriding the default.')
+    tf.app.flags.DEFINE_string(
+        'hparams', '',
+        'Comma-separated list of `name=value` pairs. For each pair, the value of '
+        'the hyperparameter named `name` is set to `value`. This mapping is merged '
+        'with the default hyperparameters.')
 
 
 class ImprovRnnConfigFlagsException(Exception):
-  pass
+    pass
 
 
 def config_from_flags():
-  """Parses flags and returns the appropriate ImprovRnnConfig.
+    """Parses flags and returns the appropriate ImprovRnnConfig.
 
-  Returns:
-    The appropriate ImprovRnnConfig based on the supplied flags.
+    Returns:
+      The appropriate ImprovRnnConfig based on the supplied flags.
 
-  Raises:
-     ImprovRnnConfigFlagsException: When an invalid config is supplied.
-  """
-  if FLAGS.config not in improv_rnn_model.default_configs:
-    raise ImprovRnnConfigFlagsException(
-        '`--config` must be one of %s. Got %s.' % (
-            improv_rnn_model.default_configs.keys(), FLAGS.config))
-  config = improv_rnn_model.default_configs[FLAGS.config]
-  config.hparams.parse(FLAGS.hparams)
-  if FLAGS.generator_id is not None:
-    config.details.id = FLAGS.generator_id
-  if FLAGS.generator_description is not None:
-    config.details.description = FLAGS.generator_description
-  return config
+    Raises:
+       ImprovRnnConfigFlagsException: When an invalid config is supplied.
+    """
+    if FLAGS.config not in improv_rnn_model.default_configs:
+        raise ImprovRnnConfigFlagsException(
+            '`--config` must be one of %s. Got %s.' % (
+                improv_rnn_model.default_configs.keys(), FLAGS.config))
+    config = improv_rnn_model.default_configs[FLAGS.config]
+    config.hparams.parse(FLAGS.hparams)
+    if FLAGS.generator_id is not None:
+        config.details.id = FLAGS.generator_id
+    if FLAGS.generator_description is not None:
+        config.details.description = FLAGS.generator_description
+    return config

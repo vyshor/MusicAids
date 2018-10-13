@@ -19,46 +19,49 @@ import tensorflow as tf
 from magenta.models.drums_rnn import drums_rnn_model
 
 FLAGS = tf.app.flags.FLAGS
-# tf.app.flags.DEFINE_string(
-#     'config',
-#     'drum_kit',
-#     "Which config to use. Must be one of 'one_drum' or 'drum_kit'.")
-# tf.app.flags.DEFINE_string(
-#     'generator_id',
-#     None,
-#     'A unique ID for the generator, overriding the default.')
-# tf.app.flags.DEFINE_string(
-#     'generator_description',
-#     None,
-#     'A description of the generator, overriding the default.')
-# tf.app.flags.DEFINE_string(
-#     'hparams', '',
-#     'Comma-separated list of `name=value` pairs. For each pair, the value of '
-#     'the hyperparameter named `name` is set to `value`. This mapping is merged '
-#     'with the default hyperparameters.')
+
+
+def set_flags():
+    tf.app.flags.DEFINE_string(
+        'config',
+        'drum_kit',
+        "Which config to use. Must be one of 'one_drum' or 'drum_kit'.")
+    tf.app.flags.DEFINE_string(
+        'generator_id',
+        None,
+        'A unique ID for the generator, overriding the default.')
+    tf.app.flags.DEFINE_string(
+        'generator_description',
+        None,
+        'A description of the generator, overriding the default.')
+    tf.app.flags.DEFINE_string(
+        'hparams', '',
+        'Comma-separated list of `name=value` pairs. For each pair, the value of '
+        'the hyperparameter named `name` is set to `value`. This mapping is merged '
+        'with the default hyperparameters.')
 
 
 class DrumsRnnConfigFlagsException(Exception):
-  pass
+    pass
 
 
 def config_from_flags():
-  """Parses flags and returns the appropriate DrumsRnnConfig.
+    """Parses flags and returns the appropriate DrumsRnnConfig.
 
-  Returns:
-    The appropriate DrumsRnnConfig based on the supplied flags.
+    Returns:
+      The appropriate DrumsRnnConfig based on the supplied flags.
 
-  Raises:
-     DrumsRnnConfigFlagsException: When an invalid config is supplied.
-  """
-  if FLAGS.config not in drums_rnn_model.default_configs:
-    raise DrumsRnnConfigFlagsException(
-        '`--config` must be one of %s. Got %s.' % (
-            drums_rnn_model.default_configs.keys(), FLAGS.config))
-  config = drums_rnn_model.default_configs[FLAGS.config]
-  config.hparams.parse(FLAGS.hparams)
-  if FLAGS.generator_id is not None:
-    config.details.id = FLAGS.generator_id
-  if FLAGS.generator_description is not None:
-    config.details.description = FLAGS.generator_description
-  return config
+    Raises:
+       DrumsRnnConfigFlagsException: When an invalid config is supplied.
+    """
+    if FLAGS.config not in drums_rnn_model.default_configs:
+        raise DrumsRnnConfigFlagsException(
+            '`--config` must be one of %s. Got %s.' % (
+                drums_rnn_model.default_configs.keys(), FLAGS.config))
+    config = drums_rnn_model.default_configs[FLAGS.config]
+    config.hparams.parse(FLAGS.hparams)
+    if FLAGS.generator_id is not None:
+        config.details.id = FLAGS.generator_id
+    if FLAGS.generator_description is not None:
+        config.details.description = FLAGS.generator_description
+    return config
