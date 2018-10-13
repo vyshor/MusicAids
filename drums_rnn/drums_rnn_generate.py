@@ -33,72 +33,74 @@ from magenta.protobuf import generator_pb2
 from magenta.protobuf import music_pb2
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_string(
-    'run_dir', None,
-    'Path to the directory where the latest checkpoint will be loaded from.')
-tf.app.flags.DEFINE_string(
-    'checkpoint_file', None,
-    'Path to the checkpoint file. run_dir will take priority over this flag.')
-tf.app.flags.DEFINE_string(
-    'bundle_file', None,
-    'Path to the bundle file. If specified, this will take priority over '
-    'run_dir and checkpoint_file, unless save_generator_bundle is True, in '
-    'which case both this flag and either run_dir or checkpoint_file are '
-    'required')
-tf.app.flags.DEFINE_boolean(
-    'save_generator_bundle', False,
-    'If true, instead of generating a sequence, will save this generator as a '
-    'bundle file in the location specified by the bundle_file flag')
-tf.app.flags.DEFINE_string(
-    'bundle_description', None,
-    'A short, human-readable text description of the bundle (e.g., training '
-    'data, hyper parameters, etc.).')
-tf.app.flags.DEFINE_string(
-    'output_dir', '/tmp/drums_rnn/generated',
-    'The directory where MIDI files will be saved to.')
-tf.app.flags.DEFINE_integer(
-    'num_outputs', 10,
-    'The number of drum tracks to generate. One MIDI file will be created for '
-    'each.')
-tf.app.flags.DEFINE_integer(
-    'num_steps', 128,
-    'The total number of steps the generated drum tracks should be, priming '
-    'drum track length + generated steps. Each step is a 16th of a bar.')
-tf.app.flags.DEFINE_string(
-    'primer_drums', '',
-    'A string representation of a Python list of tuples containing drum pitch '
-    'values. For example: '
-    '"[(36,42),(),(),(),(42,),(),(),()]". If specified, this drum track will '
-    'be used as the priming drum track. If a priming drum track is not '
-    'specified, drum tracks will be generated from scratch.')
-tf.app.flags.DEFINE_string(
-    'primer_midi', '',
-    'The path to a MIDI file containing a drum track that will be used as a '
-    'priming drum track. If a primer drum track is not specified, drum tracks '
-    'will be generated from scratch.')
-tf.app.flags.DEFINE_float(
-    'qpm', None,
-    'The quarters per minute to play generated output at. If a primer MIDI is '
-    'given, the qpm from that will override this flag. If qpm is None, qpm '
-    'will default to 120.')
-tf.app.flags.DEFINE_float(
-    'temperature', 1.0,
-    'The randomness of the generated drum tracks. 1.0 uses the unaltered '
-    'softmax probabilities, greater than 1.0 makes tracks more random, less '
-    'than 1.0 makes tracks less random.')
-tf.app.flags.DEFINE_integer(
-    'beam_size', 1,
-    'The beam size to use for beam search when generating drum tracks.')
-tf.app.flags.DEFINE_integer(
-    'branch_factor', 1,
-    'The branch factor to use for beam search when generating drum tracks.')
-tf.app.flags.DEFINE_integer(
-    'steps_per_iteration', 1,
-    'The number of steps to take per beam search iteration.')
-tf.app.flags.DEFINE_string(
-    'log', 'INFO',
-    'The threshold for what messages will be logged DEBUG, INFO, WARN, ERROR, '
-    'or FATAL.')
+
+def set_flags():
+    tf.app.flags.DEFINE_string(
+        'run_dir', None,
+        'Path to the directory where the latest checkpoint will be loaded from.')
+    tf.app.flags.DEFINE_string(
+        'checkpoint_file', None,
+        'Path to the checkpoint file. run_dir will take priority over this flag.')
+    tf.app.flags.DEFINE_string(
+        'bundle_file', None,
+        'Path to the bundle file. If specified, this will take priority over '
+        'run_dir and checkpoint_file, unless save_generator_bundle is True, in '
+        'which case both this flag and either run_dir or checkpoint_file are '
+        'required')
+    tf.app.flags.DEFINE_boolean(
+        'save_generator_bundle', False,
+        'If true, instead of generating a sequence, will save this generator as a '
+        'bundle file in the location specified by the bundle_file flag')
+    tf.app.flags.DEFINE_string(
+        'bundle_description', None,
+        'A short, human-readable text description of the bundle (e.g., training '
+        'data, hyper parameters, etc.).')
+    tf.app.flags.DEFINE_string(
+        'output_dir', '/tmp/drums_rnn/generated',
+        'The directory where MIDI files will be saved to.')
+    tf.app.flags.DEFINE_integer(
+        'num_outputs', 10,
+        'The number of drum tracks to generate. One MIDI file will be created for '
+        'each.')
+    tf.app.flags.DEFINE_integer(
+        'num_steps', 128,
+        'The total number of steps the generated drum tracks should be, priming '
+        'drum track length + generated steps. Each step is a 16th of a bar.')
+    tf.app.flags.DEFINE_string(
+        'primer_drums', '',
+        'A string representation of a Python list of tuples containing drum pitch '
+        'values. For example: '
+        '"[(36,42),(),(),(),(42,),(),(),()]". If specified, this drum track will '
+        'be used as the priming drum track. If a priming drum track is not '
+        'specified, drum tracks will be generated from scratch.')
+    tf.app.flags.DEFINE_string(
+        'primer_midi', '',
+        'The path to a MIDI file containing a drum track that will be used as a '
+        'priming drum track. If a primer drum track is not specified, drum tracks '
+        'will be generated from scratch.')
+    tf.app.flags.DEFINE_float(
+        'qpm', None,
+        'The quarters per minute to play generated output at. If a primer MIDI is '
+        'given, the qpm from that will override this flag. If qpm is None, qpm '
+        'will default to 120.')
+    tf.app.flags.DEFINE_float(
+        'temperature', 1.0,
+        'The randomness of the generated drum tracks. 1.0 uses the unaltered '
+        'softmax probabilities, greater than 1.0 makes tracks more random, less '
+        'than 1.0 makes tracks less random.')
+    tf.app.flags.DEFINE_integer(
+        'beam_size', 1,
+        'The beam size to use for beam search when generating drum tracks.')
+    tf.app.flags.DEFINE_integer(
+        'branch_factor', 1,
+        'The branch factor to use for beam search when generating drum tracks.')
+    tf.app.flags.DEFINE_integer(
+        'steps_per_iteration', 1,
+        'The number of steps to take per beam search iteration.')
+    tf.app.flags.DEFINE_string(
+        'log', 'INFO',
+        'The threshold for what messages will be logged DEBUG, INFO, WARN, ERROR, '
+        'or FATAL.')
 
 
 def get_checkpoint():
@@ -255,14 +257,27 @@ def main(unused_argv):
         run_with_flags(generator)
 
 
-def console_entry_point():
-    name = 'drum_kit_rnn'
-    FLAGS.config = name
-    FLAGS.num_steps = 256
+def drums_rnn_generate(model_name='drum_kit_rnn', steps=256, primer=[]):
+    # Default model = 'drum_kit_rnn"
+    # Possible models for drum_kit_rnn = drum_kit_rnn
+    # Default steps = 256, equals to 16 bar
+    # 1 bar = 16 steps
+
+    FLAGS.config = model_name
+    FLAGS.num_steps = steps
     FLAGS.bundle_file = f'../prebuilt_models/{name}.mag'
     FLAGS.output_dir = f'../generated/{name}'
+    if primer:
+        FLAGS.primer_drums = primer
     tf.app.run(main)
+
+    # name = 'drum_kit_rnn'
+    # FLAGS.config = name
+    # FLAGS.num_steps = 256
+    # FLAGS.bundle_file = f'../prebuilt_models/{name}.mag'
+    # FLAGS.output_dir = f'../generated/{name}'
+    # tf.app.run(main)
 
 
 if __name__ == '__main__':
-    console_entry_point()
+    drums_rnn_generate()

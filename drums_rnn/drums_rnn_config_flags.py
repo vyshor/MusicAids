@@ -19,23 +19,23 @@ import tensorflow as tf
 from magenta.models.drums_rnn import drums_rnn_model
 
 FLAGS = tf.app.flags.FLAGS
-tf.app.flags.DEFINE_string(
-    'config',
-    'drum_kit',
-    "Which config to use. Must be one of 'one_drum' or 'drum_kit'.")
-tf.app.flags.DEFINE_string(
-    'generator_id',
-    None,
-    'A unique ID for the generator, overriding the default.')
-tf.app.flags.DEFINE_string(
-    'generator_description',
-    None,
-    'A description of the generator, overriding the default.')
-tf.app.flags.DEFINE_string(
-    'hparams', '',
-    'Comma-separated list of `name=value` pairs. For each pair, the value of '
-    'the hyperparameter named `name` is set to `value`. This mapping is merged '
-    'with the default hyperparameters.')
+# tf.app.flags.DEFINE_string(
+#     'config',
+#     'drum_kit',
+#     "Which config to use. Must be one of 'one_drum' or 'drum_kit'.")
+# tf.app.flags.DEFINE_string(
+#     'generator_id',
+#     None,
+#     'A unique ID for the generator, overriding the default.')
+# tf.app.flags.DEFINE_string(
+#     'generator_description',
+#     None,
+#     'A description of the generator, overriding the default.')
+# tf.app.flags.DEFINE_string(
+#     'hparams', '',
+#     'Comma-separated list of `name=value` pairs. For each pair, the value of '
+#     'the hyperparameter named `name` is set to `value`. This mapping is merged '
+#     'with the default hyperparameters.')
 
 
 class DrumsRnnConfigFlagsException(Exception):

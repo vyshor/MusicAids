@@ -4,12 +4,17 @@ from telepot.loop import MessageLoop
 from pydub import AudioSegment
 import miditools
 import MIDI_to_generate
+from os import listdir
+
 
 # pip install telepot
 # pip install pydub
 # pip install tensorflow
 # pip install magenta
 # pip install magenta-gpu
+# pip install vamp
+# pip install midiutil
+# pip install jams
 
 # Convert WAV to MIDI
 # Input: audio_id (String)
@@ -23,6 +28,7 @@ def to_MIDI(audio_id):
 # Input: audio_id (String), audio_type (String)
 # Output: audio_file_path (String)
 def to_WAV(audio_id, audio_type):
+    print(audio_id, audio_type)
     if audio_type.lower() != "wav":
         raw_audio = AudioSegment.from_file('./Audio/' + str(audio_id) + '.' + str(audio_type), format=audio_type)
         raw_audio.export('./Audio/' + str(audio_id) + '.wav', format="wav")
@@ -36,7 +42,8 @@ def download_audio(msg, content_type):
     audio_type = msg[content_type]["mime_type"][-3::]
     bot.download_file(audio_id, './Audio/' + str(audio_id) + '.' + str(audio_type))
 
-    return audio_id, audio_type
+    print(audio_id, audio_type)
+    return audio_id, audio_type 
 
 
 # Telegram Bot Handle
@@ -50,6 +57,8 @@ def handle(msg):
 
     # Handle audio/voice file
     audio_id, audio_type = download_audio(msg, content_type)
+    while not listdir('./Audio'):
+        time.sleep(1)
     to_WAV(audio_id, audio_type)
     # Getting midi_file in dictionary form
     midi_file = to_MIDI(audio_id)
@@ -57,7 +66,6 @@ def handle(msg):
 
     # midi_file is dictionary format
     MIDI_to_generate.generate_audio(midi_file)
-
 
 
 bot = telepot.Bot("650714662:AAErwYcsJYNPnAw8Vpa9rEw9Q1w6D1vGV3c")

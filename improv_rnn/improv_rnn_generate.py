@@ -281,7 +281,7 @@ def main(unused_argv):
 
 def improv_rnn_generate(model_name='chord_pitches_improv', steps=256, primer=[]):
     # Default model = 'chord_pitches_improv'
-    # Possible models for melody rnn = basic_rnn, attention_rnn, lookback_rnn
+    # Possible models for improv rnn = chord_pitches_improv
     # Default steps = 256, equals to 16 bar
     # 1 bar = 16 steps
 
