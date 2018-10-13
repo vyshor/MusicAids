@@ -18,8 +18,9 @@ reset_flags()
 from drums_rnn import drums_rnn_generate
 drums_rnn_generate = drums_rnn_generate.drums_rnn_generate
 reset_flags()
-# from polyphony_rnn import polyphony_rnn_generate
-# reset_flags()
+from polyphony_rnn import polyphony_rnn_generate
+polyphony_rnn_generate = polyphony_rnn_generate.polyphony_rnn_generate
+reset_flags()
 
 
 def generate_audio(chord_dict, instrument='melody'):

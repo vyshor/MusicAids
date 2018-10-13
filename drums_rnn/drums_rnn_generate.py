@@ -265,8 +265,8 @@ def drums_rnn_generate(model_name='drum_kit_rnn', steps=256, primer=[]):
 
     FLAGS.config = model_name
     FLAGS.num_steps = steps
-    FLAGS.bundle_file = f'../prebuilt_models/{name}.mag'
-    FLAGS.output_dir = f'../generated/{name}'
+    FLAGS.bundle_file = f'./prebuilt_models/{model_name}.mag'
+    FLAGS.output_dir = f'./telegram_generated'
     if primer:
         FLAGS.primer_drums = primer
     tf.app.run(main)

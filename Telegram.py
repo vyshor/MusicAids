@@ -6,13 +6,15 @@ import miditools
 import MIDI_to_generate
 from os import listdir
 
+# need to set the variables for ffmpeg to work
+# https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg
 
 # pip install telepot
 # pip install pydub
 # pip install tensorflow
 # pip install magenta
 # pip install magenta-gpu
-# pip install vamp
+# pip install vamp  
 # pip install midiutil
 # pip install jams
 
@@ -43,7 +45,7 @@ def download_audio(msg, content_type):
     bot.download_file(audio_id, './Audio/' + str(audio_id) + '.' + str(audio_type))
 
     print(audio_id, audio_type)
-    return audio_id, audio_type 
+    return audio_id, audio_type
 
 
 # Telegram Bot Handle
