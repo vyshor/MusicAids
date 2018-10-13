@@ -7,21 +7,26 @@ import MIDI_to_generate
 from os import listdir
 
 # need to set the variables for ffmpeg to work
-# https://github.com/adaptlearning/adapt_authoring/wiki/Installing-FFmpeg
 
 # pip install telepot
 # pip install pydub
 # pip install tensorflow
 # pip install magenta
 # pip install magenta-gpu
-# pip install vamp  
 # pip install midiutil
 # pip install jams
+
+# For python2
+# pip install librosa
+# pip install vamp
+# pip install midiutil
+# pip install numpy
 
 # Convert WAV to MIDI
 # Input: audio_id (String)
 # Output: MIDI (Dictionary)
 def to_MIDI(audio_id):
+    miditools.convert_mp3_to_midi(audio_id)
     # do what is needed
     return miditools.get_midi_info(audio_id)
 
@@ -59,9 +64,12 @@ def handle(msg):
 
     # Handle audio/voice file
     audio_id, audio_type = download_audio(msg, content_type)
-    while not listdir('./Audio'):
+    while audio_id + '.' + audio_type not in listdir('./Audio'):
         time.sleep(1)
+    print(listdir('./Audio'))
     to_WAV(audio_id, audio_type)
+    while audio_id + '.wav' not in listdir('./Audio'):
+        time.sleep(1)
     # Getting midi_file in dictionary form
     midi_file = to_MIDI(audio_id)
     print(midi_file)
