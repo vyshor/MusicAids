@@ -16,7 +16,7 @@ from os import listdir
 # pip install midiutil
 # pip install jams
 
-# For python2
+# For python2 (32 bit) (must be 32 bit)
 # pip install librosa
 # pip install vamp
 # pip install midiutil

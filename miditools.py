@@ -3,7 +3,7 @@ from mido import MidiFile
 
 
 def convert_mp3_to_midi(audio_name, bpm=60, smooth=0.15, minduration=0.15):
-    cmd = "python2 audio_to_melodia.py ./Audio/" + audio_name + ".wav " + audio_name + ".mid "
+    cmd = "python27-32 audio_to_melodia.py ./Audio/" + audio_name + ".wav ./Audio/" + audio_name + ".mid "
     cmd += str(bpm) + " --smooth " + str(smooth) + " --minduration " + str(0.15)
     os.system(cmd)
 
