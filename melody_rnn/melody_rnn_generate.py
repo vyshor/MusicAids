@@ -256,6 +256,7 @@ def melody_rnn_generate(model_name='lookback_rnn', steps=256, primer=None):
 
     FLAGS.config = model_name
     FLAGS.num_steps = steps
+    FLAGS.num_outputs = 1
     FLAGS.bundle_file = f'./prebuilt_models/{model_name}.mag'
     FLAGS.output_dir = f'./telegram_generated'
     if primer:

@@ -47,6 +47,11 @@ def generate_audio(chord_dict, instrument='melody'):
         melody_rnn_generate_func(primer=primer)
         reset_flags()
 
-    return next((join(path, f) for f in os.listdir(path) if isfile(join(path, f))), "")
+    full_path = next((join(path, f) for f in os.listdir(path) if isfile(join(path, f))), "")
+    print(full_path)
+    print(full_path.split('/')[-1])
+    filename = full_path.split('\\')[-1].split('.')[0]
+    print(filename)
+    return full_path, filename
 
 
