@@ -7,22 +7,29 @@ import MIDI_to_generate
 from os import listdir
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
+"""
+Need to set the variables for ffmpeg to work
 
-# need to set the variables for ffmpeg to work
+pip install telepot
+pip install pydub
+pip install tensorflow
+pip install magenta
+pip install magenta-gpu
+pip install midiutil
+pip install jams
 
-# pip install telepot
-# pip install pydub
-# pip install tensorflow
-# pip install magenta
-# pip install magenta-gpu
-# pip install midiutil
-# pip install jams
+For python2 (32 bit) (must be 32 bit)
 
-# For python2 (32 bit) (must be 32 bit)
-# pip install librosa
-# pip install vamp
-# pip install midiutil
-# pip install numpy
+Subsequent pip install are for python2 (32 bit)
+pip install librosa
+pip install vamp
+pip install midiutil
+pip install numpy
+"""
+
+# Dictionary for User's Choice
+user_choice = {}
+
 
 # Convert WAV to MIDI
 # Input: audio_id (String)
@@ -88,33 +95,37 @@ def on_chat_message(msg):
     print(msg)
     content_type, chat_type, chat_id = telepot.glance(msg)
 
-    if content_type == 'audio' or content_type == 'voice':
+    if (content_type == 'audio' or content_type == 'voice') and (chat_id in user_choice):
         bot.sendMessage(chat_id, 'Step 3: Bot Composing Overtime without Pay :D')
 
         mp3_full_path = process_audio(msg, content_type)
 
-        bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=query_data)
+        bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=user_choice[chat_id][0])
+        user_choice[chat_id] = ["", 0]
 
     else:
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
-            [InlineKeyboardButton(text='Piano', callback_data='Piano')],
-            [InlineKeyboardButton(text='Combine Piano', callback_data='Combine Piano')],
-            [InlineKeyboardButton(text='Simple Drum', callback_data='Drum')],
-            [InlineKeyboardButton(text='Combine Drum', callback_data='Combine Drum')],
-            [InlineKeyboardButton(text='Melody', callback_data='Melody')],
-            [InlineKeyboardButton(text='Trio', callback_data='Trio')],
+            [InlineKeyboardButton(text='Piano', callback_data='Piano'),
+             InlineKeyboardButton(text='Combine Piano', callback_data='Combine Piano')],
+            [InlineKeyboardButton(text='Simple Drum', callback_data='Drum'),
+             InlineKeyboardButton(text='Combine Drum', callback_data='Combine Drum')],
+            [InlineKeyboardButton(text='Melody', callback_data='Melody'),
+             InlineKeyboardButton(text='Trio', callback_data='Trio')]
         ])
 
         print(chat_id)
         print(msg)
         bot.sendMessage(chat_id, 'Step 1: Choose Your Style', reply_markup=keyboard)
 
+        user_choice[chat_id] = ["", 1]
+
 
 def on_callback_query(msg):
-    global query_data
     query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
 
     bot.sendMessage(from_id, 'Step 2: Send an Audio or Recording')
+
+    user_choice[chat_id] = [query_data, 2]
 
 
 bot = telepot.Bot("650714662:AAErwYcsJYNPnAw8Vpa9rEw9Q1w6D1vGV3c")
