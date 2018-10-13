@@ -25,12 +25,12 @@ reset_flags()
 from polyphony_rnn import polyphony_rnn_generate
 polyphony_rnn_generate_func = polyphony_rnn_generate.polyphony_rnn_generate
 reset_flags()
-from music_vae import music_vae_generate
-music_vae_generate_func = music_vae_generate.polyphony_rnn_generate
-reset_flags()
+# from music_vae import music_vae_generate
+# music_vae_generate_func = music_vae_generate.polyphony_rnn_generate
+# reset_flags()
 
 
-def generate_audio(chord_dict, midi_path, instrument='melody'):
+def generate_audio(chord_dict, midi_path, instrument='simple_melody'):
     path = './telegram_generated'
     note_type = chord_dict['on_off']
     note = chord_dict['note']
