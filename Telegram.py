@@ -30,6 +30,8 @@ pip install numpy
 
 # Dictionary for User's Choice
 user_choice = {}
+# Message ID for displaying Progress
+current_progress = 0
 
 
 # Convert WAV to MIDI
@@ -74,6 +76,7 @@ def process_audio(msg, content_type):
 
     print(listdir('./Audio'))
 
+    bot.editMessageText(current_progress, "Converting Audio Files ... ")
     to_WAV(audio_id, audio_type)
 
     while audio_id + '.wav' not in listdir('./Audio'):
@@ -81,35 +84,33 @@ def process_audio(msg, content_type):
 
     # Getting midi_file in dictionary form
     midi_dict, midi_path = to_MIDI(audio_id)
-    os.remove(f'./Audio/{audio_id}.wav')
-    if f'{audio_id}.{audio_type}' in listdir('./Audio'):
-        os.remove(f'./Audio/{audio_id}.{audio_type}')
     print(midi_dict)
 
     # midi_file is dictionary format
+    bot.editMessageText(current_progress, "Generating Melodies ...")
     full_path, file_name = MIDI_to_generate.generate_audio(midi_dict, midi_path)
-    os.remove(midi_path)
 
+    bot.editMessageText(current_progress, "Finalizing Masterpiece ... ")
     miditools.convert_midi_to_mp3(full_path, file_name)
-    os.remove(full_path)
 
     return './telegram_generated/' + file_name + '.mp3'
 
 
 # Telegram Bot Handle
 def on_chat_message(msg):
-    print(msg)
     content_type, chat_type, chat_id = telepot.glance(msg)
 
     if (content_type == 'audio' or content_type == 'voice') and (chat_id in user_choice):
         bot.sendMessage(chat_id, 'Step 3: Bot Composing Overtime without Pay :D')
 
+        sent = bot.sendMessage(chat_id, "Processing Audio ... ")
+        current_progress = telepot.message_identifier(sent)
+
         mp3_full_path = process_audio(msg, content_type)
 
+        bot.editMessageText(current_progress, "Uploading... Blame the Internet XD")
         bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=user_choice[chat_id][0])
-        os.remove(mp3_full_path)
         user_choice[chat_id] = ["", 0]
-
     else:
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text='Piano', callback_data='Piano'),
@@ -144,3 +145,6 @@ print('Listening ...')
 
 while 1:
     time.sleep(10)
+
+
+
