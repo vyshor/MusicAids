@@ -6,3 +6,5 @@ for p in s.parts:
     p.insert(0, instrument.ElectricBass())
 
 s.write('midi', './new.mid')
+
+
