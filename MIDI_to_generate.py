@@ -99,12 +99,21 @@ def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
 
         melody_rnn_config_flags.set_flags()
         melody_rnn_generate.set_flags()
-        melody_rnn_generate_func(primer=primer)
+        melody_rnn_generate_func(primer=primer, steps=512)
         reset_flags()
 
-        polyphony_rnn_generate.set_flags()
-        polyphony_rnn_generate_func(primer=primer)
+        melody_rnn_config_flags.set_flags()
+        melody_rnn_generate.set_flags()
+        melody_rnn_generate_func(primer=primer, steps=512)
         reset_flags()
+
+        # polyphony_rnn_generate.set_flags()
+        # polyphony_rnn_generate_func(primer=primer)
+        # reset_flags()
+
+        # polyphony_rnn_generate.set_flags()
+        # polyphony_rnn_generate_func(primer=primer)
+        # reset_flags()
 
         midi_list = [join(path, f) for f in os.listdir(path) if isfile(join(path, f))]
         midi1 = midi_list[0]
@@ -123,7 +132,7 @@ def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
         for i in range(2):
             drums_rnn_config_flags.set_flags()
             drums_rnn_generate.set_flags()
-            drums_rnn_generate_func(primer_midi=midi_path)
+            drums_rnn_generate_func(primer_midi=midi_path, steps=512)
             reset_flags()
 
             midi = next(f.strip('.mid') for f in os.listdir(path) if isfile(join(path, f)))
@@ -133,15 +142,19 @@ def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
 
             drums_rnn_config_flags.set_flags()
             drums_rnn_generate.set_flags()
-            drums_rnn_generate_func(primer_midi=midi_path)
+            drums_rnn_generate_func(primer_midi=midi_path, steps=512)
             reset_flags()
             orig_name = next(f.strip('.mid') for f in os.listdir(path) if 'bass' not in f)
             os.rename(join(path, orig_name + '.mid'), join(path, 'drum_' + orig_name + '.mid'))
             drum_midi = 'drum_' + orig_name
             print(drum_midi)
 
-            polyphony_rnn_generate.set_flags()
-            polyphony_rnn_generate_func(primer=primer)
+            # polyphony_rnn_generate.set_flags()
+            # polyphony_rnn_generate_func(primer=primer, steps=512)
+            # reset_flags()
+            melody_rnn_config_flags.set_flags()
+            melody_rnn_generate.set_flags()
+            melody_rnn_generate_func(primer=primer, steps=512)
             reset_flags()
 
             orig_name = next(f.strip('.mid') for f in os.listdir(path) if 'bass' not in f and 'drum' not in f)
@@ -150,16 +163,17 @@ def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
 
             print(piano_midi)
             miditools.save_midi(miditools.get_trio(drum_midi, piano_midi, bass_midi), 'composite' + str(i))
-            # for f in os.listdir(path):
-            #     if 'composite' not in f:
-            #         os.remove(join(path, f))
+            for f in os.listdir(path):
+                if 'composite' not in f:
+                    os.remove(join(path, f))
                     # Remove all the other useless midi
+            # exit()
 
         midi_list = [join(path, f) for f in os.listdir(path) if isfile(join(path, f))]
         midi1 = midi_list[0]
         midi2 = midi_list[-1]
         music_vae_generate.set_flags()
-        music_vae_generate_func('hierdec-mel_16bar', midi1, midi2)
+        music_vae_generate_func('hierdec-trio_16bar', midi1, midi2)
         os.remove(midi1)
         os.remove(midi2)
 

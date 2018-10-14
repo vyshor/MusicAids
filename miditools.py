@@ -9,11 +9,13 @@ def convert_mp3_to_midi(audio_name, bpm=60, smooth=0.15, minduration=0.15):
     cmd += str(bpm) + " --smooth " + str(smooth) + " --minduration " + str(minduration)
     print("Executing " + cmd)
     os.system(cmd)
+    os.remove(f'./Audio/{audio_name}.wav')
 
-def convert_midi_to_mp3(audio_name):
-    cmd = "timidity ./Audio/" + audio_name + ".mid -Ow -o ./Audio/" + audio_name + ".mp3"
+def convert_midi_to_mp3(audio_name, full_path):
+    cmd = "timidity ./telegram_generated/" + audio_name + ".mid -Ow -o ./telegram_generated/" + audio_name + ".mp3"
     print("Executing " + cmd)
     os.system(cmd)
+    os.remove(full_path)
 
 
 def get_midi_info(audio_name):
@@ -62,7 +64,7 @@ def clean_bass(bass):
         if hasattr(bass.tracks[0][i], "channel"):
             # if bass.tracks[0][i].type == 'note_on':
             bass.tracks[0][i].channel = 1
-            bass.tracks[0][i].time = int(bass.tracks[0][i].time/2)
+            bass.tracks[0][i].time = int(bass.tracks[0][i].time/2*1.1)
             new_track.append(bass.tracks[0][i])
     new_track.append(MidiFile("./Audio/C1.mid").tracks[2][-1])
     return new_bass
@@ -79,7 +81,8 @@ def clean_melody(melody):
     new_track.append(MidiFile("./Audio/C1.mid").tracks[1][0])
     for i in melody.tracks[1]:
         if i.type == 'note_on':
-            i.time = int(i.time*2)
+            i.channel = 0
+            i.time = int(i.time*2.2)
             new_track.append(i)
     new_track.append(MidiFile("./Audio/C1.mid").tracks[1][-1])
     return new_melody
@@ -98,7 +101,7 @@ def clean_drum(drum):
     for i in drum.tracks[2]:
         if i.type == 'note_on':
             i.channel = 9
-            i.time = int(i.time*2)
+            i.time = int(i.time*2.2)
             new_track.append(i)
     new_track.append(MidiFile("./Audio/C1.mid").tracks[3][-1])
     return new_drum

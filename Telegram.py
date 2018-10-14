@@ -5,6 +5,7 @@ from pydub import AudioSegment
 import miditools
 import MIDI_to_generate
 from os import listdir
+import os
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
 """
@@ -84,6 +85,10 @@ def process_audio(msg, content_type, instrument_choice):
     while audio_id + '.wav' not in listdir('./Audio'):
         time.sleep(1)
 
+    try:
+        os.remove(f'./Audio/{audio_id}.{audio_type}')
+    except:
+        pass
     # Getting midi_file in dictionary form
     midi_dict, midi_path = to_MIDI(audio_id)
     print(midi_dict)
@@ -91,9 +96,10 @@ def process_audio(msg, content_type, instrument_choice):
     # midi_file is dictionary format
     # bot.editMessageText(progress, "Generating Melodies ...")
     full_path, file_name = MIDI_to_generate.generate_audio(midi_dict, midi_path, instrument_choice)
+    os.remove(midi_path)
 
     # bot.editMessageText(progress, "Finalizing Masterpiece ... ")
-    miditools.convert_midi_to_mp3(full_path, file_name)
+    miditools.convert_midi_to_mp3(file_name, full_path)
 
     return './telegram_generated/' + file_name + '.mp3'
 
@@ -113,6 +119,8 @@ def on_chat_message(msg):
         # bot.editMessageText(progress, "Uploading... Blame the Internet XD")
         bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=user_choice[chat_id][0])
         user_choice[chat_id] = ["", 0]
+        time.sleep(5) # in case they remove before upload
+        os.remove(mp3_full_path)
     else:
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text='Piano', callback_data='Piano'),

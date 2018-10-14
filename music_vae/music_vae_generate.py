@@ -132,7 +132,7 @@ def run(config_map):
                 print(
                     'MusicVAE configs have very specific input requirements. Could not '
                     'extract any valid inputs from `%s`. Try another MIDI file.' % path)
-                sys.exit()
+                # sys.exit()
             elif len(tensors) > 1:
                 basename = os.path.join(
                     FLAGS.output_dir,
@@ -144,7 +144,7 @@ def run(config_map):
                     '%d valid inputs extracted from `%s`. Outputting these potential '
                     'inputs as `%s`. Call script again with one of these instead.' %
                     (len(tensors), path, basename))
-                sys.exit()
+                # sys.exit()
 
         logging.info(
             'Attempting to extract examples from input MIDIs using config `%s`...',
@@ -205,29 +205,29 @@ def music_vae_generate(model_name, midi1, midi2):
     # Corresponding ckpt = trio_16bar_hierdec.ckpt
 
     # run(configs.CONFIG_MAP)
-    # ckpt = ckpt_dict[model_name]
+    ckpt = ckpt_dict[model_name]
     # print(ckpt_dict)
     # print(ckpt)
+    FLAGS.config = model_name
+    FLAGS.checkpoint_file = f'./ckpt/{ckpt}/{ckpt}'
+    # print(FLAGS.checkpoint_file)
+    FLAGS.mode = 'sample'
+    FLAGS.num_outputs = 1
+    FLAGS.input_midi_1 = midi1
+    FLAGS.input_midi_2 = midi2
+    FLAGS.output_dir = f'./telegram_generated'
+    # FLAGS.run_dir = f'..'
+    tf.app.run(main)
+
+    # ckpt = ckpt_dict[model_name]
     # FLAGS.config = model_name
     # FLAGS.checkpoint_file = f'../ckpt/{ckpt}/{ckpt}'
-    # print(FLAGS.checkpoint_file)
     # FLAGS.mode = 'interpolate'
-    # FLAGS.num_outputs = 1
-    # FLAGS.input_midi_1 = midi1
-    # FLAGS.input_midi_2 = midi2
-    # FLAGS.output_dir = f'./telegram_generated'
-    # # FLAGS.run_dir = f'..'
+    # FLAGS.num_outputs = 10
+    # FLAGS.input_midi_1 = '../telegram_generated/composite0.mid'
+    # FLAGS.input_midi_2 = '../telegram_generated/composite1.mid'
+    # FLAGS.output_dir = f'../generated/{FLAGS.config}'
     # tf.app.run(main)
-
-    ckpt = ckpt_dict[model_name]
-    FLAGS.config = model_name
-    FLAGS.checkpoint_file = f'../ckpt/{ckpt}/{ckpt}'
-    FLAGS.mode = 'interpolate'
-    FLAGS.num_outputs = 10
-    FLAGS.input_midi_1 = '../telegram_generated/composite0.mid'
-    FLAGS.input_midi_2 = '../telegram_generated/composite1.mid'
-    FLAGS.output_dir = f'../generated/{FLAGS.config}'
-    tf.app.run(main)
 
 
 if __name__ == '__main__':
