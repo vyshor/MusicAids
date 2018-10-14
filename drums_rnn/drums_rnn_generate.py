@@ -257,7 +257,7 @@ def main(unused_argv):
         run_with_flags(generator)
 
 
-def drums_rnn_generate(model_name='drum_kit_rnn', steps=256, primer=[]):
+def drums_rnn_generate(model_name='drum_kit_rnn', steps=256, primer_midi="", outputs=1):
     # Default model = 'drum_kit_rnn"
     # Possible models for drum_kit_rnn = drum_kit_rnn
     # Default steps = 256, equals to 16 bar
@@ -265,10 +265,11 @@ def drums_rnn_generate(model_name='drum_kit_rnn', steps=256, primer=[]):
 
     FLAGS.config = model_name
     FLAGS.num_steps = steps
+    FLAGS.num_outputs = outputs
     FLAGS.bundle_file = f'./prebuilt_models/{model_name}.mag'
     FLAGS.output_dir = f'./telegram_generated'
-    if primer:
-        FLAGS.primer_drums = primer
+    if primer_midi:
+        FLAGS.primer_midi = primer_midi
     tf.app.run(main)
 
     # name = 'drum_kit_rnn'

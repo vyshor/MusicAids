@@ -279,15 +279,14 @@ def main(unused_argv):
         run_with_flags(generator)
 
 
-def improv_rnn_generate(model_name='chord_pitches_improv', steps=256, primer=[]):
+def improv_rnn_generate(model_name='chord_pitches_improv', primer=[]):
     # Default model = 'chord_pitches_improv'
     # Possible models for improv rnn = chord_pitches_improv
     # Default steps = 256, equals to 16 bar
     # 1 bar = 16 steps
 
-    set_flags()
     FLAGS.config = model_name
-    FLAGS.num_steps = steps
+    FLAGS.num_outputs = 1
     FLAGS.bundle_file = f'./prebuilt_models/{model_name}.mag'
     FLAGS.output_dir = f'./telegram_generated'
     if primer:

@@ -248,8 +248,8 @@ def main(unused_argv):
         run_with_flags(generator)
 
 
-def melody_rnn_generate(model_name='lookback_rnn', steps=256, primer=None):
-    # Default model = 'lookback_rnn"
+def melody_rnn_generate(model_name='basic_rnn', steps=256, primer=None):
+    # Default model = 'basic_rnn"
     # Possible models for melody rnn = basic_rnn, attention_rnn, lookback_rnn
     # Default steps = 256, equals to 16 bar
     # 1 bar = 16 steps
