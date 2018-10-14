@@ -3,6 +3,7 @@ import tensorflow as tf
 from absl import flags
 import os
 from os.path import isfile, join
+import miditools
 
 
 def reset_flags():
@@ -91,14 +92,34 @@ def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
         print("Running music_vae (combined_melody)")
         print("But using melody_rnn to generate 1 note melody first, and 1 piano melody from polyphony_rnn")
 
+        drums_rnn_config_flags.set_flags()
+        drums_rnn_generate.set_flags()
+        drums_rnn_generate_func(primer_midi=midi_path)
+        reset_flags()
+
+        midi = next(f.strip('.mid') for f in os.listdir(path) if isfile(join(path, f)))
+        miditools.to_bass(midi, f'bass_{midi}]')
+        bass_midi = f'bass_{midi}'
+
+        drums_rnn_config_flags.set_flags()
+        drums_rnn_generate.set_flags()
+        drums_rnn_generate_func(primer_midi=midi_path)
+        reset_flags()
+        drum_midi = 'drum_' + next(f.strip('.mid') for f in os.listdir(path) if 'bass' not in f)
+
+        polyphony_rnn_generate.set_flags()
+        polyphony_rnn_generate_func(primer=primer)
+        reset_flags()
+
+        piano_midi = next(f.strip('.mid') for f in os.listdir(path) if 'bass' not in f and 'drum')
+        miditools.get_trio(f'{midi}1')
+
         melody_rnn_config_flags.set_flags()
         melody_rnn_generate.set_flags()
         melody_rnn_generate_func(primer=primer)
         reset_flags()
 
-        polyphony_rnn_generate.set_flags()
-        polyphony_rnn_generate_func(primer=primer)
-        reset_flags()
+
 
         midi_list = [join(path, f) for f in os.listdir(path) if isfile(join(path, f))]
         midi1 = midi_list[0]
@@ -113,6 +134,8 @@ def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
         print("But generating two melody, one convert to base, another leave as melody, generating one more from drums")
         print("After that, run the function to combine all into one midi")
         print("Repeat that again, and combine the two trios together")
+
+        dr
 
         melody_rnn_config_flags.set_flags()
         melody_rnn_generate.set_flags()

@@ -204,6 +204,7 @@ def music_vae_generate(model_name, midi1, midi2):
     # Possible configs for trio combinations = hierdec-trio_16bar
     # Corresponding ckpt = trio_16bar_hierdec.ckpt
 
+    run(configs.CONFIG_MAP)
     ckpt = ckpt_dict[model_name]
     print(ckpt_dict)
     print(ckpt)
