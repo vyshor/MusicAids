@@ -1,4 +1,4 @@
-# Project Title
+# MusicKeet
 
 MusicKeet Auto Music Generating Bot
 
