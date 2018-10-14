@@ -31,7 +31,7 @@ pip install numpy
 # Dictionary for User's Choice
 user_choice = {}
 # Message ID for displaying Progress
-current_progress = 0
+current_progress = tuple()
 
 
 # Convert WAV to MIDI
