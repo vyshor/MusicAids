@@ -3,7 +3,7 @@
 Music Aids Auto Music Generating Bot
 
 ## IMPORTANT
-1. Pre train too big to be uploaded to git. We will run the telegram bot up till after lunch. Id of bot is @MusicKeetBot
+1. Pre train model is too big to be uploaded to git. We will run the telegram bot up till after lunch. Id of bot is @MusicKeetBot
 2. Bot is not multi-threaded so please be patient when using the bot
 3. We do not recommend deploying it on your end as it will take about 1 to 2 hours just installing the dependencies assuming no errors.
 
