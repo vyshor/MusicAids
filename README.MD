@@ -1,4 +1,4 @@
-# MusicKeet
+# Music Aid
 
 MusicKeet Auto Music Generating Bot
 
