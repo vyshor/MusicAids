@@ -37,63 +37,63 @@ def get_midi_info(audio_name):
     return {"on_off": on_off, "note": note, "velocity": velocity, "time": time}
 
 def get_meta():
-    mid = MidiFile("C1.mid")
+    mid = MidiFile("Audio/C1.mid")
     return mid.tracks[0]
 
 def to_bass(input_filename, output_filename): ## Use the midi for drum as input to get desirable outcome
-    s = converter.parse(input_filename + ".mid")
+    s = converter.parse('/telegram_generated/' + input_filename + ".mid")
     for p in s.parts:
         p.insert(0, instrument.AcousticBass())
-    s.write('midi', output_filename + '.mid')
+    s.write('midi', '/telegram_generated/' + output_filename + '.mid')
 
 
 def clean_bass(bass):
-    bass = MidiFile(bass + '.mid')
+    bass = MidiFile('/telegram_generated/' + bass + '.mid')
     new_bass = MidiFile()
     new_track = MidiTrack()
     new_bass.tracks.append(get_meta())
     new_bass.tracks.append(new_track)
 
-    new_track.append(MidiFile("C1.mid").tracks[2][0])
+    new_track.append(MidiFile("/Audio/C1.mid").tracks[2][0])
     for i in range(5, len(bass.tracks[0])-20):
         if hasattr(bass.tracks[0][i], "channel"):
             # if bass.tracks[0][i].type == 'note_on':
             bass.tracks[0][i].channel = 1
             bass.tracks[0][i].time = int(bass.tracks[0][i].time/2)
             new_track.append(bass.tracks[0][i])
-    new_track.append(MidiFile("C1.mid").tracks[2][-1])
+    new_track.append(MidiFile("/Audio/C1.mid").tracks[2][-1])
     return new_bass
 
 def clean_melody(melody):
-    melody = MidiFile(melody + '.mid')
+    melody = MidiFile('/telegram_generated/' + melody + '.mid')
     new_melody = MidiFile()
     new_track = MidiTrack()
     new_melody.tracks.append(get_meta())
     new_melody.tracks.append(new_track)
 
-    new_track.append(MidiFile("C1.mid").tracks[1][0])
+    new_track.append(MidiFile("/Audio/C1.mid").tracks[1][0])
     for i in melody.tracks[1]:
         if i.type == 'note_on':
             i.time = int(i.time*2)
             new_track.append(i)
-    new_track.append(MidiFile("C1.mid").tracks[1][-1])
+    new_track.append(MidiFile("/Audio/C1.mid").tracks[1][-1])
     return new_melody
 
 
 def clean_drum(drum):
-    drum = MidiFile(drum + ".mid")
+    drum = MidiFile('/telegram_generated/' + drum + ".mid")
     new_drum = MidiFile()
     new_track = MidiTrack()
     new_drum.tracks.append(get_meta())
     new_drum.tracks.append(new_track)
 
-    new_track.append(MidiFile("C1.mid").tracks[3][0])
+    new_track.append(MidiFile("/Audio/C1.mid").tracks[3][0])
     for i in drum.tracks[2]:
         if i.type == 'note_on':
             i.channel = 9
             i.time = int(i.time*2)
             new_track.append(i)
-    new_track.append(MidiFile("C1.mid").tracks[3][-1])
+    new_track.append(MidiFile("/Audio/C1.mid").tracks[3][-1])
     return new_drum
 
 def get_trio(drum, melody, bass):
@@ -115,4 +115,4 @@ def print_midi(midi):
 
 
 def save_midi(midi, output_filename):
-    midi.save(output_filename + '.mid')
+    midi.save('/telegram_generated/' + output_filename + '.mid')
