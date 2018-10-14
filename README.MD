@@ -1,6 +1,6 @@
-# Music Aid
+# Music Aids
 
-MusicKeet Auto Music Generating Bot
+Music Aids Auto Music Generating Bot
 
 ## IMPORTANT
 1. Pre train too big to be uploaded to git. We will run the telegram bot up till after lunch. Id of bot is @MusicKeetBot
