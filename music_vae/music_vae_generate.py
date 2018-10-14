@@ -219,12 +219,12 @@ def music_vae_generate(model_name, midi1, midi2):
     # FLAGS.checkpoint_file = f'../ckpt/{ckpt}/{ckpt}'
     # FLAGS.mode = 'interpolate'
     # FLAGS.num_outputs = 10
-    # FLAGS.input_midi_1 = '../generated/polyphony_rnn/cbad.mid'
-    # FLAGS.input_midi_2 = '../generated/polyphony_rnn/abcd.mid'
+    # FLAGS.input_midi_1 = '../generated/abcd.mid'
+    # FLAGS.input_midi_2 = '../generated/abcd.mid'
     # FLAGS.output_dir = f'../generated/{FLAGS.config}'
     # tf.app.run(main)
 
 
 if __name__ == '__main__':
     set_flags()
-    music_vae_generate()
+    music_vae_generate('hierdec-trio_16bar', '1', '2')

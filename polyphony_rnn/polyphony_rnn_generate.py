@@ -272,7 +272,7 @@ def main(unused_argv):
         run_with_flags(generator)
 
 
-def polyphony_rnn_generate(model_name='polyphony_rnn', steps=256, primer=[]):
+def polyphony_rnn_generate(model_name='polyphony_rnn', steps=256, outputs=1, primer=[]):
     # Default model = 'lookback_rnn"
     # Possible models for melody rnn = basic_rnn, attention_rnn, lookback_rnn
     # Default steps = 256, equals to 16 bar
@@ -280,6 +280,7 @@ def polyphony_rnn_generate(model_name='polyphony_rnn', steps=256, primer=[]):
 
     FLAGS.config = model_name
     FLAGS.num_steps = steps
+    FLAGS.num_outputs = outputs
     if primer:
         FLAGS.primer_melody = primer
     else:

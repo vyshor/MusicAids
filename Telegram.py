@@ -31,7 +31,14 @@ pip install numpy
 # Dictionary for User's Choice
 user_choice = {}
 # Message ID for displaying Progress
+<<<<<<< HEAD
 current_progress = tuple()
+=======
+current_progress = 0
+instrument = {'Piano': 'simple_piano', 'Combined Piano': 'combined_piano', 'Drum': 'simple_drum',
+              'Combined Drum': 'combined_drum',
+              'Melody': 'simple_melody', 'Trio': 'trios'}
+>>>>>>> 7558893fbaad524bceca29fcdc4a835b2a02df97
 
 
 # Convert WAV to MIDI
@@ -68,7 +75,7 @@ def download_audio(msg, content_type):
 
 # Process Audio
 # Input: msg (Dictionary Object)
-def process_audio(msg, content_type):
+def process_audio(msg, content_type, instrument_choice):
     audio_id, audio_type = download_audio(msg, content_type)
 
     while audio_id + '.' + audio_type not in listdir('./Audio'):
@@ -76,7 +83,7 @@ def process_audio(msg, content_type):
 
     print(listdir('./Audio'))
 
-    bot.editMessageText(current_progress, "Converting Audio Files ... ")
+    # bot.editMessageText(current_progress, "Converting Audio Files ... ")
     to_WAV(audio_id, audio_type)
 
     while audio_id + '.wav' not in listdir('./Audio'):
@@ -87,10 +94,10 @@ def process_audio(msg, content_type):
     print(midi_dict)
 
     # midi_file is dictionary format
-    bot.editMessageText(current_progress, "Generating Melodies ...")
-    full_path, file_name = MIDI_to_generate.generate_audio(midi_dict, midi_path)
+    # bot.editMessageText(current_progress, "Generating Melodies ...")
+    full_path, file_name = MIDI_to_generate.generate_audio(midi_dict, midi_path, instrument_choice)
 
-    bot.editMessageText(current_progress, "Finalizing Masterpiece ... ")
+    # bot.editMessageText(current_progress, "Finalizing Masterpiece ... ")
     miditools.convert_midi_to_mp3(full_path, file_name)
 
     return './telegram_generated/' + file_name + '.mp3'
@@ -104,9 +111,10 @@ def on_chat_message(msg):
         bot.sendMessage(chat_id, 'Step 3: Bot Composing Overtime without Pay :D')
 
         sent = bot.sendMessage(chat_id, "Processing Audio ... ")
-        current_progress = telepot.message_identifier(sent)
+        current_progress = sent['chat_id']
+        # current_progress = telepot.message_identifier(sent)
 
-        mp3_full_path = process_audio(msg, content_type)
+        mp3_full_path = process_audio(msg, content_type, instrument_choice=instrument[user_choice[chat_id][0]])
 
         bot.editMessageText(current_progress, "Uploading... Blame the Internet XD")
         bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=user_choice[chat_id][0])
@@ -114,9 +122,9 @@ def on_chat_message(msg):
     else:
         keyboard = InlineKeyboardMarkup(inline_keyboard=[
             [InlineKeyboardButton(text='Piano', callback_data='Piano'),
-             InlineKeyboardButton(text='Combine Piano', callback_data='Combine Piano')],
+             InlineKeyboardButton(text='Combined Piano', callback_data='Combined Piano')],
             [InlineKeyboardButton(text='Simple Drum', callback_data='Drum'),
-             InlineKeyboardButton(text='Combine Drum', callback_data='Combine Drum')],
+             InlineKeyboardButton(text='Combined Drum', callback_data='Combined Drum')],
             [InlineKeyboardButton(text='Melody', callback_data='Melody'),
              InlineKeyboardButton(text='Trio', callback_data='Trio')]
         ])
@@ -145,6 +153,3 @@ print('Listening ...')
 
 while 1:
     time.sleep(10)
-
-
-
