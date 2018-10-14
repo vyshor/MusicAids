@@ -97,7 +97,7 @@ def run(config_map):
     """
     date_and_time = time.strftime('%Y-%m-%d_%H%M%S')
 
-    if FLAGS.run_dir is None == FLAGS.checkpoint_file is None:
+    if FLAGS.run_dir is None and FLAGS.checkpoint_file is None:
         raise ValueError(
             'Exactly one of `--run_dir` or `--checkpoint_file` must be specified.')
     if FLAGS.output_dir is None:
@@ -205,13 +205,17 @@ def music_vae_generate(model_name, midi1, midi2):
     # Corresponding ckpt = trio_16bar_hierdec.ckpt
 
     ckpt = ckpt_dict[model_name]
+    print(ckpt_dict)
+    print(ckpt)
     FLAGS.config = model_name
     FLAGS.checkpoint_file = f'../ckpt/{ckpt}/{ckpt}'
+    print(FLAGS.checkpoint_file)
     FLAGS.mode = 'interpolate'
     FLAGS.num_outputs = 1
     FLAGS.input_midi_1 = midi1
     FLAGS.input_midi_2 = midi2
     FLAGS.output_dir = f'./telegram_generated'
+    # FLAGS.run_dir = f'..'
     tf.app.run(main)
 
     # ckpt = ckpt_dict[model_name]
@@ -219,12 +223,13 @@ def music_vae_generate(model_name, midi1, midi2):
     # FLAGS.checkpoint_file = f'../ckpt/{ckpt}/{ckpt}'
     # FLAGS.mode = 'interpolate'
     # FLAGS.num_outputs = 10
-    # FLAGS.input_midi_1 = '../generated/abcd.mid'
-    # FLAGS.input_midi_2 = '../generated/abcd.mid'
+    # FLAGS.input_midi_1 = '../generated/polyphony_rnn/abc.mid'
+    # FLAGS.input_midi_2 = '../generated/polyphony_rnn/cba.mid'
     # FLAGS.output_dir = f'../generated/{FLAGS.config}'
     # tf.app.run(main)
 
 
 if __name__ == '__main__':
     set_flags()
-    music_vae_generate('hierdec-trio_16bar', '1', '2')
+    music_vae_generate('hierdec-mel_16bar', '1', '2')
+    # music_vae_generate('hierdec-trio_16bar', '1', '2')
