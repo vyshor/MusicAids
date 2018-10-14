@@ -111,12 +111,14 @@ def on_chat_message(msg):
     if (content_type == 'audio' or content_type == 'voice') and (chat_id in user_choice):
         bot.sendMessage(chat_id, 'Step 3: Bot Composing Overtime without Pay :D')
 
-        sent = bot.sendMessage(chat_id, "Processing Audio ... ")
+        #sent =
+        bot.sendMessage(chat_id, "Processing Audio ... ")
         # progress = telepot.message_identifier(sent)
 
         mp3_full_path = process_audio(msg, content_type, instrument_choice=instrument[user_choice[chat_id][0]])
 
         # bot.editMessageText(progress, "Uploading... Blame the Internet XD")
+        bot.sendMessage(chat_id, "Uploading... Blame the Internet XD")
         bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=user_choice[chat_id][0])
         user_choice[chat_id] = ["", 0]
         time.sleep(5) # in case they remove before upload
