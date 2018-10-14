@@ -1,17 +1,18 @@
 import os
 from mido import MidiFile, MidiTrack
 from music21 import converter, instrument
+import time
 
 
 def convert_mp3_to_midi(audio_name, bpm=60, smooth=0.15, minduration=0.15):
     cmd = "python27-32 audio_to_melodia.py ./Audio/" + audio_name + ".wav " + "./Audio/" + audio_name + ".mid "
     cmd += str(bpm) + " --smooth " + str(smooth) + " --minduration " + str(minduration)
-    print("Execturing " + cmd)
+    print("Executing " + cmd)
     os.system(cmd)
 
 def convert_midi_to_mp3(audio_name):
     cmd = "timidity ./Audio/" + audio_name + ".mid -Ow -o ./Audio/" + audio_name + ".mp3"
-    print("Execturing " + cmd)
+    print("Executing " + cmd)
     os.system(cmd)
 
 
@@ -37,7 +38,7 @@ def get_midi_info(audio_name):
     return {"on_off": on_off, "note": note, "velocity": velocity, "time": time}
 
 def get_meta():
-    mid = MidiFile("Audio/C1.mid")
+    mid = MidiFile("./Audio/C1.mid")
     return mid.tracks[0]
 
 def to_bass(input_filename, output_filename): ## Use the midi for drum as input to get desirable outcome
@@ -48,6 +49,11 @@ def to_bass(input_filename, output_filename): ## Use the midi for drum as input 
 
 
 def clean_bass(bass):
+<<<<<<< HEAD
+=======
+    while bass + ".mid" not in os.listdir('./telegram_generated'):
+        time.sleep(1)
+>>>>>>> 07b4f5749149cae12295c6afb396fa12500c9ab1
     bass = MidiFile('./telegram_generated/' + bass + '.mid')
     new_bass = MidiFile()
     new_track = MidiTrack()
@@ -65,6 +71,11 @@ def clean_bass(bass):
     return new_bass
 
 def clean_melody(melody):
+<<<<<<< HEAD
+=======
+    while melody + ".mid" not in os.listdir('./telegram_generated'):
+        time.sleep(1)
+>>>>>>> 07b4f5749149cae12295c6afb396fa12500c9ab1
     melody = MidiFile('./telegram_generated/' + melody + '.mid')
     new_melody = MidiFile()
     new_track = MidiTrack()
@@ -82,6 +93,11 @@ def clean_melody(melody):
 
 
 def clean_drum(drum):
+<<<<<<< HEAD
+=======
+    while drum + ".mid" not in os.listdir('./telegram_generated'):
+        time.sleep(1)
+>>>>>>> 07b4f5749149cae12295c6afb396fa12500c9ab1
     drum = MidiFile('./telegram_generated/' + drum + ".mid")
     new_drum = MidiFile()
     new_track = MidiTrack()
@@ -101,6 +117,8 @@ def get_trio(drum, melody, bass):
     trio = MidiFile()
 
     trio.tracks.append(get_meta())
+    print(drum, melody, bass)
+    print(os.listdir('./telegram_generated'))
     trio.tracks.append(clean_drum(drum).tracks[1])
     trio.tracks.append(clean_melody(melody).tracks[1])
     trio.tracks.append(clean_bass(bass).tracks[1])
@@ -116,6 +134,7 @@ def print_midi(midi):
 
 
 def save_midi(midi, output_filename):
+<<<<<<< HEAD
     midi.save('./telegram_generated/' + output_filename + '.mid')
 
 # for i, track in enumerate(MidiFile('composite0.mid').tracks):
@@ -123,3 +142,6 @@ def save_midi(midi, output_filename):
     # for msg in track:
     #     print(msg)
 save_midi(get_trio('drum', 'piano', 'bass'), "combined")
+=======
+    midi.save('./telegram_generated/' + output_filename + '.mid')
+>>>>>>> 07b4f5749149cae12295c6afb396fa12500c9ab1

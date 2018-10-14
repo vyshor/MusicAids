@@ -3,6 +3,7 @@ import tensorflow as tf
 from absl import flags
 import os
 from os.path import isfile, join
+import miditools
 
 
 def reset_flags():
@@ -14,18 +15,23 @@ def reset_flags():
 # initialise the flags everytime before and after I use
 
 from melody_rnn import melody_rnn_generate, melody_rnn_config_flags
+
 melody_rnn_generate_func = melody_rnn_generate.melody_rnn_generate
 reset_flags()
 from improv_rnn import improv_rnn_generate, improv_rnn_config_flags
+
 improv_rnn_generate_func = improv_rnn_generate.improv_rnn_generate
 reset_flags()
 from drums_rnn import drums_rnn_generate, drums_rnn_config_flags
+
 drums_rnn_generate_func = drums_rnn_generate.drums_rnn_generate
 reset_flags()
 from polyphony_rnn import polyphony_rnn_generate
+
 polyphony_rnn_generate_func = polyphony_rnn_generate.polyphony_rnn_generate
 reset_flags()
 from music_vae import music_vae_generate
+
 music_vae_generate_func = music_vae_generate.music_vae_generate
 reset_flags()
 
@@ -114,14 +120,40 @@ def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
         print("After that, run the function to combine all into one midi")
         print("Repeat that again, and combine the two trios together")
 
-        melody_rnn_config_flags.set_flags()
-        melody_rnn_generate.set_flags()
-        melody_rnn_generate_func(primer=primer)
-        reset_flags()
+        for i in range(2):
+            drums_rnn_config_flags.set_flags()
+            drums_rnn_generate.set_flags()
+            drums_rnn_generate_func(primer_midi=midi_path)
+            reset_flags()
 
-        polyphony_rnn_generate.set_flags()
-        polyphony_rnn_generate_func(primer=primer)
-        reset_flags()
+            midi = next(f.strip('.mid') for f in os.listdir(path) if isfile(join(path, f)))
+            miditools.to_bass(midi, f'bass_{midi}')
+            bass_midi = f'bass_{midi}'
+            print(bass_midi)
+
+            drums_rnn_config_flags.set_flags()
+            drums_rnn_generate.set_flags()
+            drums_rnn_generate_func(primer_midi=midi_path)
+            reset_flags()
+            orig_name = next(f.strip('.mid') for f in os.listdir(path) if 'bass' not in f)
+            os.rename(join(path, orig_name + '.mid'), join(path, 'drum_' + orig_name + '.mid'))
+            drum_midi = 'drum_' + orig_name
+            print(drum_midi)
+
+            polyphony_rnn_generate.set_flags()
+            polyphony_rnn_generate_func(primer=primer)
+            reset_flags()
+
+            orig_name = next(f.strip('.mid') for f in os.listdir(path) if 'bass' not in f and 'drum' not in f)
+            os.rename(join(path, orig_name + '.mid'), join(path, 'piano_' + orig_name + '.mid'))
+            piano_midi = 'piano_' + orig_name
+
+            print(piano_midi)
+            miditools.save_midi(miditools.get_trio(drum_midi, piano_midi, bass_midi), 'composite' + str(i))
+            # for f in os.listdir(path):
+            #     if 'composite' not in f:
+            #         os.remove(join(path, f))
+                    # Remove all the other useless midi
 
         midi_list = [join(path, f) for f in os.listdir(path) if isfile(join(path, f))]
         midi1 = midi_list[0]
@@ -139,5 +171,3 @@ def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
     filename = full_path.split('\\')[-1].split('.')[0]
     print(filename)
     return full_path, filename
-
-
