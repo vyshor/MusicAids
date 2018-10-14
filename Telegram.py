@@ -78,7 +78,7 @@ def process_audio(msg, content_type, instrument_choice):
 
     print(listdir('./Audio'))
 
-    bot.editMessageText(progress, "Converting Audio Files ... ")
+    # bot.editMessageText(progress, "Converting Audio Files ... ")
     to_WAV(audio_id, audio_type)
 
     while audio_id + '.wav' not in listdir('./Audio'):
@@ -89,10 +89,10 @@ def process_audio(msg, content_type, instrument_choice):
     print(midi_dict)
 
     # midi_file is dictionary format
-    bot.editMessageText(progress, "Generating Melodies ...")
+    # bot.editMessageText(progress, "Generating Melodies ...")
     full_path, file_name = MIDI_to_generate.generate_audio(midi_dict, midi_path, instrument_choice)
 
-    bot.editMessageText(progress, "Finalizing Masterpiece ... ")
+    # bot.editMessageText(progress, "Finalizing Masterpiece ... ")
     miditools.convert_midi_to_mp3(full_path, file_name)
 
     return './telegram_generated/' + file_name + '.mp3'
@@ -106,11 +106,11 @@ def on_chat_message(msg):
         bot.sendMessage(chat_id, 'Step 3: Bot Composing Overtime without Pay :D')
 
         sent = bot.sendMessage(chat_id, "Processing Audio ... ")
-        progress = telepot.message_identifier(sent)
+        # progress = telepot.message_identifier(sent)
 
         mp3_full_path = process_audio(msg, content_type, instrument_choice=instrument[user_choice[chat_id][0]])
 
-        bot.editMessageText(progress, "Uploading... Blame the Internet XD")
+        # bot.editMessageText(progress, "Uploading... Blame the Internet XD")
         bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=user_choice[chat_id][0])
         user_choice[chat_id] = ["", 0]
     else:
