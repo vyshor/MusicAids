@@ -25,12 +25,12 @@ reset_flags()
 from polyphony_rnn import polyphony_rnn_generate
 polyphony_rnn_generate_func = polyphony_rnn_generate.polyphony_rnn_generate
 reset_flags()
-# from music_vae import music_vae_generate
-# music_vae_generate_func = music_vae_generate.polyphony_rnn_generate
-# reset_flags()
+from music_vae import music_vae_generate
+music_vae_generate_func = music_vae_generate.music_vae_generate
+reset_flags()
 
 
-def generate_audio(chord_dict, midi_path, instrument='simple_piano'):
+def generate_audio(chord_dict, midi_path, instrument='combined_piano'):
     path = './telegram_generated'
     note_type = chord_dict['on_off']
     note = chord_dict['note']
@@ -89,11 +89,11 @@ def generate_audio(chord_dict, midi_path, instrument='simple_piano'):
 
     elif instrument == 'combined_piano':
         print("Running music_vae (combined_melody)")
-        print("But using chord_pitches_improv to generate 1 progression chord first, and 1 piano melody from polyphony_rnn")
+        print("But using melody_rnn to generate 1 note melody first, and 1 piano melody from polyphony_rnn")
 
-        improv_rnn_config_flags.set_flags()
-        improv_rnn_generate.set_flags()
-        improv_rnn_generate_func(primer=primer)
+        melody_rnn_config_flags.set_flags()
+        melody_rnn_generate.set_flags()
+        melody_rnn_generate_func(primer=primer)
         reset_flags()
 
         polyphony_rnn_generate.set_flags()
@@ -114,10 +114,9 @@ def generate_audio(chord_dict, midi_path, instrument='simple_piano'):
         print("After that, run the function to combine all into one midi")
         print("Repeat that again, and combine the two trios together")
 
-
-        improv_rnn_config_flags.set_flags()
-        improv_rnn_generate.set_flags()
-        improv_rnn_generate_func(primer=primer)
+        melody_rnn_config_flags.set_flags()
+        melody_rnn_generate.set_flags()
+        melody_rnn_generate_func(primer=primer)
         reset_flags()
 
         polyphony_rnn_generate.set_flags()
