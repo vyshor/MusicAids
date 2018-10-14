@@ -4,13 +4,13 @@ from music21 import converter, instrument
 
 
 def convert_mp3_to_midi(audio_name, bpm=60, smooth=0.15, minduration=0.15):
-    cmd = "python27-32 audio_to_melodia.py ./Audio/" + audio_name + ".wav " + audio_name + ".mid "
+    cmd = "python27-32 audio_to_melodia.py ./Audio/" + audio_name + ".wav " + "./Audio/" + audio_name + ".mid "
     cmd += str(bpm) + " --smooth " + str(smooth) + " --minduration " + str(minduration)
     print("Execturing " + cmd)
     os.system(cmd)
 
 def convert_midi_to_mp3(audio_name):
-    cmd = "timidity " + audio_name + ".mid -Ow -o " + audio_name + ".mp3"
+    cmd = "timidity ./Audio/" + audio_name + ".mid -Ow -o ./Audio/" + audio_name + ".mp3"
     print("Execturing " + cmd)
     os.system(cmd)
 
