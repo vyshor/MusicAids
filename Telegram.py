@@ -31,14 +31,13 @@ pip install numpy
 # Dictionary for User's Choice
 user_choice = {}
 # Message ID for displaying Progress
-<<<<<<< HEAD
+
 current_progress = tuple()
-=======
+
 current_progress = 0
 instrument = {'Piano': 'simple_piano', 'Combined Piano': 'combined_piano', 'Drum': 'simple_drum',
               'Combined Drum': 'combined_drum',
               'Melody': 'simple_melody', 'Trio': 'trios'}
->>>>>>> 7558893fbaad524bceca29fcdc4a835b2a02df97
 
 
 # Convert WAV to MIDI
