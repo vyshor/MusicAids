@@ -149,8 +149,7 @@ def on_callback_query(msg):
     user_choice[from_id] = [query_data, 2]
 
 
-# bot = telepot.Bot("650714662:AAErwYcsJYNPnAw8Vpa9rEw9Q1w6D1vGV3c")
-bot = telepot.Bot("565545160:AAFfC3niohinhOTnBqJY11Jsu6J1_c6xmsI")
+# bot = telepot.Bot("<insert Telegram Bot Code")
 
 MessageLoop(bot, {'chat': on_chat_message,
                   'callback_query': on_callback_query}).run_as_thread()
