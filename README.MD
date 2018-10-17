@@ -38,7 +38,6 @@ You need to install the following Python modules:
 * [Vamp](https://pypi.org/project/vamp/)
 * [Mido](https://pypi.org/project/mido/)
 * [Numpy](https://scipy.org/install.html)
-* [Audio-to-Melodia](http://www.justinsalamon.com/news/convert-audio-to-midi-melody-using-melodia)
 
 ### Softwares Required
 
