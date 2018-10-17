@@ -4,6 +4,11 @@
 
 ###### Music Aids Auto Music Generating Bot ([Devpost](https://devpost.com/software/musickeet))
 
+### Tl;dr
+1. Telegram bot that receives user (recorded) audio
+2. Compose a music piece using [Magenta](https://github.com/tensorflow/magenta) models
+3. Return it back to the user via telegram
+
 ## IMPORTANT
 1. The files for pre-trained model is too big to be uploaded to GitHub. You have to download it manually [here]().
 2. Bot is not multi-threaded so please be patient when using the bot.
@@ -11,7 +16,7 @@
 
 ## Getting Started
 
-The project runs on Python 3.6. However, you need to install 32-bit Python 2 for it work correctly due to the multiple audio conversions. The full list of dependencies is listed below:
+The project runs on Python 3.6. However, you need to install 32-bit Python 2.7 for it work correctly due to the multiple audio conversions. The full list of dependencies is listed below:
 
 ### Python Modules
 
@@ -42,3 +47,8 @@ You need to install the following Python modules:
 * SoundFont
 * GeneralUser GS
 
+For installation of dependencies, please
+1. Set your environment path to the \<path>/ffmpeg/bin for the usage of FFmpeg
+2. Then also refer to Instructions.docx for remaining steps in the root folder.
+3. Install all the python dependencies for the corresponding python version.
+4. Download the pre-trained models [here]() and copy the 'ckpt' folder in the unzipped folder into the root folder directly.
