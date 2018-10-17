@@ -121,6 +121,7 @@ def on_chat_message(msg):
         bot.sendMessage(chat_id, "Uploading... Blame the Internet XD")
         bot.sendAudio(chat_id, open(mp3_full_path, 'rb'), title=user_choice[chat_id][0])
         user_choice[chat_id] = ["", 0]
+        print("Uploaded to user")
         time.sleep(5) # in case they remove before upload
         os.remove(mp3_full_path)
     else:
@@ -148,7 +149,8 @@ def on_callback_query(msg):
     user_choice[from_id] = [query_data, 2]
 
 
-bot = telepot.Bot("650714662:AAErwYcsJYNPnAw8Vpa9rEw9Q1w6D1vGV3c")
+# bot = telepot.Bot("650714662:AAErwYcsJYNPnAw8Vpa9rEw9Q1w6D1vGV3c")
+bot = telepot.Bot("565545160:AAFfC3niohinhOTnBqJY11Jsu6J1_c6xmsI")
 
 MessageLoop(bot, {'chat': on_chat_message,
                   'callback_query': on_callback_query}).run_as_thread()
