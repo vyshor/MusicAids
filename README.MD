@@ -6,7 +6,7 @@
 
 ### Tl;dr
 1. Telegram bot that receives user (recorded) audio
-2. Compose a music piece using [Magenta](https://github.com/tensorflow/magenta) models
+2. Compose a music piece using [Magenta](https://github.com/tensorflow/magenta) models based on the pitch and 'velocity' of the audio
 3. Return it back to the user via telegram
 
 ## IMPORTANT
