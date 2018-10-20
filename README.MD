@@ -10,7 +10,7 @@
 3. Return it back to the user via telegram
 
 ## IMPORTANT
-1. The files for pre-trained model is too big to be uploaded to GitHub. You have to download it manually [here]().
+1. The files for pre-trained model is too big to be uploaded to GitHub. You have to download it manually [here](http://www.mediafire.com/file/1hbbuv275lq99gg/ckpt.zip/file) and copy the 'ckpt' folder in the unzipped folder into the root folder directly.
 2. Bot is not multi-threaded so please be patient when using the bot.
 3. We do not recommend deploying it on your end as it will take about 1 to 2 hours just installing the dependencies assuming no errors. Hopefully, we can try to set up a simple working server to run the telegram bot for you to test it out, no guarantees though.
 
@@ -50,4 +50,4 @@ For installation of dependencies, please
 1. Set your environment path to the \<path>/ffmpeg/bin for the usage of FFmpeg
 2. Then also refer to Instructions.docx for remaining steps in the root folder.
 3. Install all the python dependencies for the corresponding python version.
-4. Download the pre-trained models [here]() and copy the 'ckpt' folder in the unzipped folder into the root folder directly.
+4. Download the pre-trained models [here](http://www.mediafire.com/file/1hbbuv275lq99gg/ckpt.zip/file) and copy the 'ckpt' folder in the unzipped folder into the root folder directly.
