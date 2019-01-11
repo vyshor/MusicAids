@@ -8,11 +8,14 @@
 1. Telegram bot that receives user (recorded) audio
 2. Compose a music piece using [Magenta](https://github.com/tensorflow/magenta) models based on the pitch and 'velocity' of the audio
 3. Return it back to the user via telegram
+4. You can test it out [here](http://t.me/musickeetbot) (just record a short audio on Telegram on the spot)
 
 ## IMPORTANT
 1. The files for pre-trained model is too big to be uploaded to GitHub. You have to download it manually [here](http://www.mediafire.com/file/1hbbuv275lq99gg/ckpt.zip/file) and copy the 'ckpt' folder in the unzipped folder into the root folder directly.
 2. Bot is not multi-threaded so please be patient when using the bot.
-3. We do not recommend deploying it on your end as it will take about 1 to 2 hours just installing the dependencies assuming no errors. Hopefully, we can try to set up a simple working server to run the telegram bot for you to test it out, no guarantees though.
+3. We do not recommend deploying it on your end as it will take about 1 to 2 hours just installing the dependencies assuming no errors. We managed to keep it running with a computer. If it is down, please message me through GitHub.
+
+Telegram Bot can be accessed [here](http://t.me/musickeetbot)
 
 ## Getting Started
 
@@ -29,7 +32,6 @@ You need to install the following Python modules:
 * Music21[ [Windows](http://web.mit.edu/music21/doc/installing/installWindows.html) , [Mac](http://web.mit.edu/music21/doc/installing/installMac.html), [Linux](http://web.mit.edu/music21/doc/installing/installLinux.html) ]
 * [Pydub](https://pypi.org/project/pydub/)
 * [Telepot](https://telepot.readthedocs.io/en/latest/)
-* [MIDIUtil](https://pypi.org/project/MIDIUtil/)
 
 ###### Python 2.7 (32-bit)
 
@@ -38,6 +40,7 @@ You need to install the following Python modules:
 * [Vamp](https://pypi.org/project/vamp/)
 * [Mido](https://pypi.org/project/mido/)
 * [Numpy](https://scipy.org/install.html)
+* [MIDIUtil](https://pypi.org/project/MIDIUtil/)
 
 ### Softwares Required
 
