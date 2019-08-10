@@ -15,7 +15,6 @@
 2. Bot is not multi-threaded so please be patient when using the bot.
 3. We do not recommend deploying it on your end as it will take about 1 to 2 hours just installing the dependencies assuming no errors. We managed to keep it running with a computer. If it is down, please message me through GitHub.
 
-Telegram Bot can be accessed [here](http://t.me/musickeetbot)
 
 ## Getting Started
 
